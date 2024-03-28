@@ -97,13 +97,16 @@ jobs:
 
       - name: Create Kernel Directory
   run: mkdir -p ${{ env.KERNEL_NAME }}
-        run: |
-          kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
-          patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
-          sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
-          local_kernel_version="${kernel_version}.${patchlevel}.${sublevel}"
-          echo "Kernel Version: $local_kernel_version"
-          echo "KERNEL_VERSION=${local_kernel_version}" >> $GITHUB_ENV
+
+- name: Extract Kernel Version
+  run: |
+    kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
+    patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
+    sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
+    local_kernel_version="${kernel_version}.${patchlevel}.${sublevel}"
+    echo "Kernel Version: $local_kernel_version"
+    echo "KERNEL_VERSION=${local_kernel_version}" >> $GITHUB_ENV
+
 
       - name: "💫 Get toolchains"
         env:
