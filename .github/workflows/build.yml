@@ -94,6 +94,9 @@ jobs:
           git clone --recursive --depth=1 -j $(nproc) https://github.com/Abdullashakee/kernel_xiaomi_vayu.git
 
           echo "🤔 Clone kernel source => ($KERNEL_REPO)"
+          
+      - name: "Create SkylineKernel Directory"
+        run: mkdir -p SkylineKernel
 
       - name: "Extract Kernel Version"
         working-directory: ${{ github.workspace }}/SkylineKernel
