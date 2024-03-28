@@ -220,9 +220,9 @@ jobs:
         env:
           args: ${{ steps.generate-args.outputs.args }}
           arch: ${{ steps.generate-args.outputs.ARCH }
-          run: |
-           echo "PATH Variable: $PATH"
-           make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}  
+        run: |
+          echo "PATH Variable: $PATH"
+          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}  
           
       - name: "🔡 Generate name for files and artifacts"
         run: |
