@@ -221,9 +221,10 @@ jobs:
         env:
           args: ${{ steps.generate-args.outputs.args }}
           arch: ${{ steps.generate-args.outputs.ARCH }}
-        run: |
-          echo "PATH Variable: $PATH"
-          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}
+          defconfig_name: vayu_user_defconfig
+          run: |
+           make ${{ env.args }} ${env.defconfig_name} }}
+
 
       - name: "🔡 Generate name for files and artifacts"
         run: |
