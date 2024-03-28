@@ -221,11 +221,10 @@ jobs:
         env:
           args: ${{ steps.generate-args.outputs.args }}
           arch: ${{ steps.generate-args.outputs.ARCH }}
-          defconfig_name: vayu_user_defconfig
-          run: |
-           make ${{ env.args }} ${env.defconfig_name} }}
-
-
+        run: |
+          echo "PATH Variable: $PATH"
+          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}  
+          
       - name: "🔡 Generate name for files and artifacts"
         run: |
           echo "GITHUB_RELEASE_TAG=${{ github.run_number }}.v${{ env.KERNEL_VERSION }}.${{ env.KERNEL_NAME }}.${{ env.KERNEL_DEVICE }}.${{ env.builddate }}" >> $GITHUB_ENV
