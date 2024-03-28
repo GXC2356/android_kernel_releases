@@ -95,8 +95,8 @@ jobs:
 
           echo "🤔 Clone kernel source => ($KERNEL_REPO)"
 
-      - name: 🔢 Extract kernel version
-        working-directory: ${{ env.KERNEL_NAME }}
+      - name: Create Kernel Directory
+  run: mkdir -p ${{ env.KERNEL_NAME }}
         run: |
           kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
           patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
