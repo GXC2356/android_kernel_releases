@@ -91,20 +91,24 @@ jobs:
 
       - name: "🌟 Clone kernel source => (${{ env.KERNEL_REPO }})"
         run: |
-          git clone --recursive --depth=1 -j $(nproc) --branch $KERNEL_BRANCH $KERNEL_REPO $KERNEL_NAME
+          git clone --recursive --depth=1 -j $(nproc) https://github.com/Abdullashakee/kernel_xiaomi_vayu.git
 
           echo "🤔 Clone kernel source => ($KERNEL_REPO)"
-
-      - name: 🔢 Extract kernel version
-        working-directory: ${{ env.KERNEL_NAME }}
+          
+      - name: "Change to SkylineKernel directory"
         run: |
-          kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
-          patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
-          sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
-          local_kernel_version="${kernel_version}.${patchlevel}.${sublevel}"
-          echo "Kernel Version: $local_kernel_version"
-          echo "KERNEL_VERSION=${local_kernel_version}" >> $GITHUB_ENV
+         if [ -d "SkylineKernel" ]; then
+         cd SkylineKernel || exit
+         fi
 
+      - name: "Extract Kernel Version"
+        run: |
+         kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
+         patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
+         sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
+         echo "Kernel Version: ${kernel_version}.${patchlevel}.${sublevel}"
+    
+      
       - name: "💫 Get toolchains"
         env:
           toolchains: "${{ toJSON(matrix.repos.toolchains) }}"
@@ -112,7 +116,7 @@ jobs:
           toolchains_num="$(echo $toolchains | jq 'length')"
           echo "🤔 There is $toolchains_num defined toolchains."
           for ((i=0;i<toolchains_num;i++)); do
-            toolchain_name=$(echo $toolchains | jq -r ".[$i].name")
+            toolchain_name=$echo $toolchains | jq -r ".[$i].name")
             # Github
             toolchain_repo=$(echo $toolchains | jq -r ".[$i].repo")
             toolchain_branch=$(echo $toolchains | jq -r ".[$i].branch")
@@ -218,12 +222,13 @@ jobs:
       - name: "👍 Make defconfig"
         working-directory: ${{ env.KERNEL_NAME }}
         env:
-          args: ${{ steps.generate-args.outputs.args }}
-          arch: ${{ steps.generate-args.outputs.ARCH }}
-        run: |
-          echo "PATH Variable: $PATH"
-          make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}
+         args: ${{ steps.generate-args.outputs.args }}
+         arch: ${{ steps.generate-args.outputs.ARCH }}
+        run: | 
+         echo "PATH Variable: $PATH"
+         make ${{ env.args }} vayu_user_defconfig
 
+         
       - name: "🔡 Generate name for files and artifacts"
         run: |
           echo "GITHUB_RELEASE_TAG=${{ github.run_number }}.v${{ env.KERNEL_VERSION }}.${{ env.KERNEL_NAME }}.${{ env.KERNEL_DEVICE }}.${{ env.builddate }}" >> $GITHUB_ENV
