@@ -95,16 +95,20 @@ jobs:
 
           echo "🤔 Clone kernel source => ($KERNEL_REPO)"
 
-      - name: 🔢 Extract kernel version
-        working-directory: ${{ env.KERNEL_NAME }}
-        run: |
-          kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
-          patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
-          sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
-          local_kernel_version="${kernel_version}.${patchlevel}.${sublevel}"
-          echo "Kernel Version: $local_kernel_version"
-          echo "KERNEL_VERSION=${local_kernel_version}" >> $GITHUB_ENV
+     - name: Create SkylineKernel directory
+  run: mkdir -p /home/runner/work/android_kernel_releases/android_kernel_releases/SkylineKernel
+- name: Execute script
+  run: |
+    kernel_version=$(grep "^VERSION = " Makefile | cut -d ' ' -f 3)
+    patchlevel=$(grep "^PATCHLEVEL = " Makefile | cut -d ' ' -f 3)
+    sublevel=$(grep "^SUBLEVEL = " Makefile | cut -d ' ' -f 3)
+    local_kernel_version="${kernel_version}.${patchlevel}.${sublevel}"
+    echo "Kernel Version: $local_kernel_version"
+    echo "KERNEL_VERSION=${local_kernel_version}" >> $GITHUB_ENV
+  shell: bash
+  working-directory: /home/runner/work/android_kernel_releases/android_kernel_releases/SkylineKernel
 
+ 
       - name: "💫 Get toolchains"
         env:
           toolchains: "${{ toJSON(matrix.repos.toolchains) }}"
