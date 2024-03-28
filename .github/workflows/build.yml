@@ -221,6 +221,7 @@ jobs:
         env:
           args: ${{ steps.generate-args.outputs.args }}
           arch: ${{ steps.generate-args.outputs.ARCH }}
+          DEFCONFIG_NAME: vayu_user_defconfig
         run: |
           echo "PATH Variable: $PATH"
           make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}  
