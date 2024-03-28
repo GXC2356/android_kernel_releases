@@ -91,7 +91,7 @@ jobs:
 
       - name: "🌟 Clone kernel source => (${{ env.KERNEL_REPO }})"
         run: |
-          git clone --recursive --depth=1 -j $(nproc) https://github.com/Abdullashakee/kernel_xiaomi_vayu.git
+          git clone --recursive --depth=1 -j $(nproc) https://github.com/Abdullashakee/kernel_xiaomi_vayu/tree/fourteen
 
           echo "🤔 Clone kernel source => ($KERNEL_REPO)"
           
